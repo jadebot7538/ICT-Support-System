@@ -1,0 +1,232 @@
+:root {
+  --primary-color: #3498db;
+  --secondary-color: #2c3e50;
+  --accent-color: #e74c3c;
+  --light-bg: #f8f9fa;
+  --dark-bg: #343a40;
+}
+
+body {
+  background-color: var(--light-bg);
+}
+
+.header-container {
+  background-color: white;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.nav-tabs-custom {
+  background-color: white;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+
+.tab-link {
+  color: var(--secondary-color);
+  padding: 1rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  border: none !important;
+}
+
+.tab-link:hover {
+  background-color: rgba(52, 152, 219, 0.1);
+}
+
+.tab-link.active {
+  background-color: var(--primary-color) !important;
+  color: white !important;
+  border-color: var(--primary-color) !important;
+}
+
+.table-container {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 190px) !important;
+  background-color: white;
+  border-radius: 4px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.table-header {
+  padding: 15px 15px 0 15px;
+  background-color: white;
+  z-index: 1000;
+  border-bottom: 1px solid #eee;
+}
+
+.table-content {
+  flex: 1;
+  overflow-y: auto;
+  position: relative;
+}
+
+.table-footer {
+  padding: 10px 15px;
+  background-color: white;
+  border-top: 1px solid #eee;
+  text-align: center;
+}
+
+#mytable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#mytable th {
+  background-color: var(--secondary-color);
+  color: white;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+#mytable tbody tr:hover {
+  background-color: rgba(52, 152, 219, 0.05);
+}
+
+.modal-content {
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.modal-header {
+  background-color: var(--primary-color);
+  color: white;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+.modal-title {
+  font-weight: 600;
+}
+
+.btn-close {
+  filter: brightness(0) invert(1);
+}
+
+#counter {
+  background-color: var(--secondary-color) !important;
+  color: white;
+  border-radius: 10px !important;
+  font-weight: 500;
+  padding: 10px;
+}
+
+.btn-primary-custom {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  color: white;
+}
+
+.btn-primary-custom:hover {
+  background-color: #2980b9;
+  border-color: #2980b9;
+  color: white;
+}
+
+/* Custom controls */
+.search-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.search-input {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  width: 250px;
+}
+
+.length-select {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin: 0 5px;
+}
+
+/* Pagination custom styling */
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  padding: 10px 0;
+}
+
+.pagination {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.pagination li {
+  margin: 0 5px;
+}
+
+.pagination a {
+  padding: 6px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  color: var(--primary-color);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.pagination a:hover {
+  background-color: rgba(52, 152, 219, 0.1);
+}
+
+.pagination .active a {
+  background-color: var(--primary-color);
+  color: white;
+  border-color: var(--primary-color);
+}
+
+.pagination .disabled a {
+  color: #ccc;
+  cursor: not-allowed;
+}
+
+.detail-label {
+  color: var(--secondary-color);
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.detail-value {
+  color: #555;
+  padding-left: 0.5rem;
+}
+
+.detail-row {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.detail-row:last-child {
+  border-bottom: none;
+}
+
+/* User info display */
+.user-info {
+  font-size: 0.85rem;
+  color: var(--secondary-color);
+  background-color: rgba(52, 152, 219, 0.1);
+  padding: 5px 10px;
+  border-radius: 4px;
+  margin-right: 10px;
+}
+
+/* Hide original DataTables controls */
+.dataTables_filter,
+.dataTables_length,
+.dataTables_paginate,
+.dataTables_info {
+  display: none !important;
+}

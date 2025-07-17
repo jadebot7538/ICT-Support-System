@@ -1,0 +1,35 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+* {
+  font-family: "Poppins", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.active {
+  background-color: rgba(2, 103, 35, 0.9);
+  color: white;
+}
+
+.form-control:focus {
+  border-color: #026723 !important; /* Change border color */
+  box-shadow: 4px 4px 2px #026723 !important; /* Change shadow color */
+  outline: none !important; /* Remove default outline */
+}
+
+.form-control.is-valid {
+  border-color: #026723 !important; /* Change border color */
+}
+
+.form-select:focus {
+  border-color: #026723 !important; /* Change border color */
+  box-shadow: 4px 4px 2px #026723 !important; /* Change shadow color */
+  outline: none !important; /* Remove default outline */
+}
+
+.form-select.is-valid {
+  border-color: #026723 !important; /* Change border color */
+}
+
+
+
+/*# sourceMappingURL=global.css.map */

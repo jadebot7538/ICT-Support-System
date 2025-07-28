@@ -4,6 +4,38 @@ require_once "security/session.php";
 require_once "security/csrf.php";
 require_once "database/config.php";
 
+// Multibyte-safe ucfirst
+function mb_ucfirst($str, $encoding = 'UTF-8')
+{
+    $firstChar = mb_substr($str, 0, 1, $encoding);
+    $rest = mb_substr($str, 1, null, $encoding);
+    return mb_strtoupper($firstChar, $encoding) . mb_strtolower($rest, $encoding);
+}
+
+// Formats a full name: first, middle, last, extension
+function formatName($first, $middle, $last, $ext = '')
+{
+    $firstName = mb_ucfirst(trim($first));
+    $middleInitial = $middle ? mb_strtoupper(mb_substr(trim($middle), 0, 1)) . '.' : '';
+    $lastName = mb_ucfirst(trim($last));
+
+    // Normalize extension
+    $ext_name = '';
+    if ($ext !== '') {
+        $extRaw = trim($ext);
+        $extUpper = mb_strtoupper(rtrim($extRaw, ". "));
+        if (in_array($extUpper, ['JR', 'SR'])) {
+            $ext_name = $extUpper . '.';
+        } else {
+            $ext_name = $extUpper; // e.g. III, IV, etc.
+        }
+    }
+
+    // Build the name string
+    $fullName = trim("{$firstName} {$middleInitial} {$lastName}" . ($ext_name ? " {$ext_name}" : ''));
+    return $fullName;
+}
+
 function decryptData($encryptedData)
 {
     $key = "RMS2025";
@@ -16,20 +48,21 @@ function decryptData($encryptedData)
 
     return openssl_decrypt($encryptedText, $cipher, $key, 0, $iv);
 }
-
-/* $employee_id = decryptData($_POST['employeeId']);
+/* 
+$employee_id = decryptData($_POST['employeeId']);
 $first_name = decryptData($_POST['fname']);
 $middle_name = decryptData($_POST['mname']);
 $last_name = decryptData($_POST['lname']);
-$ext_name = decryptData($_POST['extname']);
- */
-$employee_id = "224092";
-$first_name = "Jessica";
-$middle_name = "Evangelista";
-$last_name = "Franco";
-$ext_name = "Jr.";
+$ext_name = decryptData($_POST['extname']); */
 
-if ($employee_id == null || $employee_id == "" || $first_name == null || $first_name == "" || $middle_name == null || $middle_name == "" || $last_name == null || $last_name == "") {
+$employee_id = "206693";
+$first_name = "s";
+$middle_name = "";
+$last_name = "s";
+$ext_name = "";
+
+
+if ($employee_id == null || $employee_id == "" || $first_name == null || $first_name == "" || $last_name == null || $last_name == "") {
     echo "<script>alert('Access Denied'); window.location.href = 'errors/error_page.php';</script>";
     exit();
 }
@@ -41,26 +74,13 @@ $employee = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if ($employee) {
     $employee_id = $employee['gov_id'];
-    $firstName = ucfirst(strtolower($employee['first_name']));
-    $middleInitial = $employee['middle_name'] ? strtoupper(substr($employee['middle_name'], 0, 1)) . '.' : '';
-    $lastName = ucfirst(strtolower($employee['last_name']));
+    $firstName = $employee['first_name'];
+    $middleName = $employee['middle_name'];
+    $lastName = $employee['last_name'];
+    $extName = $employee['ext'];
 
-    // Normalize extension
-    $ext_nameRaw = trim($employee['ext']);
-    $ext_name = '';
-    if ($ext_nameRaw !== '') {
-        $ext = strtoupper(rtrim($ext_nameRaw, ". ")); // Remove trailing dot(s) and spaces, make uppercase
-
-        // Add dot for JR, SR only; else, no dot
-        if (in_array($ext, ['JR', 'SR'])) {
-            $ext_name = $ext . '.';
-        } else {
-            $ext_name = $ext; // e.g. III, IV, etc.
-        }
-    }
-
-    // Construct the name, add ext only if not empty
-    $employeeName = trim("{$firstName} {$middleInitial} {$lastName}" . ($ext_name ? " {$ext_name}" : ''));
+    // Use the new formatName function
+    $employeeName = formatName($firstName, $middleName, $lastName, $extName);
 }
 ?>
 

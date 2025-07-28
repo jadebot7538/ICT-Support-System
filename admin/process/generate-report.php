@@ -344,72 +344,44 @@ if (isset($_GET["start_date"]) && isset($_GET["end_date"]) && isset($_GET["categ
     $pdf->SetFont('times', '', 10);
     $counter = 1;
 
+
     if (count($records) > 0) {
         foreach ($records as $record) {
-            // Pre-process text that might need wrapping to determine row height
-            $requestorName = $record->requestor_name;
-            $locationName = $record->location_name;
-            $typeOfService = $record->type_of_service;
-            $servicePersonnel = $record->service_personnel;
-            $remarks = $record->remarks ?: '—';
+            // Prepare all cell values
+            $rowData = [
+                $counter,
+                $record->ref_no,
+                strtoupper($record->requestor_name),
+                $record->location_name,
+                $record->type_of_service,
+                ucwords($record->service_personnel),
+                $record->created_at,
+                $record->finished_at ?: '—',
+                $record->remarks ?: '—'
+            ];
 
-            // Use a more efficient row height calculation approach
-            $rowHeight = 5; // Default minimum height
-
-            // Only calculate height for fields that might need wrapping
-            if (
-                strlen($requestorName) > 25 || strlen($locationName) > 20 ||
-                strlen($typeOfService) > 20 || strlen($servicePersonnel) > 25 ||
-                strlen($remarks) > 25
-            ) {
-                // Calculate heights only for potentially problematic cells
-                $nameHeight = $pdf->getStringHeight($colWidths[2], $requestorName);
-                $locHeight = $pdf->getStringHeight($colWidths[3], $locationName);
-                $typeHeight = $pdf->getStringHeight($colWidths[4], $typeOfService);
-                $personnelHeight = $pdf->getStringHeight($colWidths[5], $servicePersonnel);
-                $remarksHeight = $pdf->getStringHeight($colWidths[8], $remarks);
-                $rowHeight = max($rowHeight, $nameHeight, $locHeight, $typeHeight, $personnelHeight, $remarksHeight);
-
-                // Add a bit of padding for better readability
-                $rowHeight += 1;
+            // Calculate the required height for each cell in the row
+            $cellHeights = [];
+            for ($i = 0; $i < count($colWidths); $i++) {
+                $cellHeights[$i] = $pdf->getStringHeight($colWidths[$i], $rowData[$i]);
             }
+            // Use the maximum height for the row
+            $rowHeight = max(5, max($cellHeights)) + 1; // +1 for padding
 
-            // Check if we need a page break
+            // Check for page break
             if ($pdf->getY() + $rowHeight > $pdf->getPageHeight() - 65) {
                 $pdf->AddPage();
-                addTableHeader($pdf, $colWidths); // Re-add header on new page
-                $pdf->SetFont('times', '', 10); // Reset font
+                addTableHeader($pdf, $colWidths);
+                $pdf->SetFont('times', '', 10);
             }
 
-            // Print the row using MultiCell for all fields to handle text wrapping
-            $startY = $pdf->GetY(); // Save starting Y position
-
-            // Number column
-            $pdf->MultiCell($colWidths[0], $rowHeight, $counter, 1, 'C', 0, 0);
-
-            // Ref No column
-            $pdf->MultiCell($colWidths[1], $rowHeight, $record->ref_no, 1, 'C', 0, 0);
-
-            // Requestor Name column
-            $pdf->MultiCell($colWidths[2], $rowHeight, $requestorName, 1, 'L', 0, 0);
-
-            // Location column - use MultiCell for proper text wrapping
-            $pdf->MultiCell($colWidths[3], $rowHeight, $locationName, 1, 'L', 0, 0);
-
-            // Type of Support column
-            $pdf->MultiCell($colWidths[4], $rowHeight, $typeOfService, 1, 'L', 0, 0);
-
-            // Service Personnel column
-            $pdf->MultiCell($colWidths[5], $rowHeight, $servicePersonnel, 1, 'L', 0, 0);
-
-            // Date Requested column
-            $pdf->MultiCell($colWidths[6], $rowHeight, $record->created_at, 1, 'C', 0, 0);
-
-            // Date Resolved column
-            $pdf->MultiCell($colWidths[7], $rowHeight, $record->finished_at ?: '—', 1, 'C', 0, 0);
-
-            // Remarks column
-            $pdf->MultiCell($colWidths[8], $rowHeight, $remarks, 1, 'L', 0, 1);
+            // Print the row using MultiCell for all columns
+            for ($i = 0; $i < count($colWidths); $i++) {
+                // Last column: set $ln=1 to move to next line, else $ln=0
+                $ln = ($i == count($colWidths) - 1) ? 1 : 0;
+                $align = ($i == 0 || $i == 1 || $i == 6 || $i == 7) ? 'C' : 'L'; // Center for No., Ref No., Dates
+                $pdf->MultiCell($colWidths[$i], $rowHeight, $rowData[$i], 1, $align, 0, $ln);
+            }
 
             $counter++;
         }
@@ -486,13 +458,13 @@ if (isset($_GET["start_date"]) && isset($_GET["end_date"]) && isset($_GET["categ
     }
 
     // Add total row
-    $pdf->SetFont('times', 'B', 9.5);
+    $pdf->SetFont('times', 'B', 8.5);
     $pdf->SetX($startX);
     $pdf->Cell($summaryTableWidth * 0.7, 5, 'TOTAL', 1, 0, 'C');
     $pdf->Cell($summaryTableWidth * 0.3, 5, $totalServices, 1, 1, 'C');
 
     // Add space before signature section
-    $pdf->Ln(7);
+    $pdf->Ln(3.5);
 
     // First row: Prepared by and Reviewed by side by side
     $signatureWidth = $availableWidth / 2;
@@ -507,8 +479,8 @@ if (isset($_GET["start_date"]) && isset($_GET["end_date"]) && isset($_GET["categ
 
     // Names for first row
     $pdf->SetFont('times', 'B', 10);
-    $pdf->Cell($signatureWidth, 4, 'Mark Ian D. Villanueva', 0, 0, 'C');
-    $pdf->Cell($signatureWidth, 4, 'Alvin L. Manuel', 0, 1, 'C');
+    $pdf->Cell($signatureWidth, 4, 'MARK IAN D. VILLANUEVA', 0, 0, 'C');
+    $pdf->Cell($signatureWidth, 4, 'ENGR. ALVIN L. MANUEL', 0, 1, 'C');
 
     // Titles for first row
     $pdf->SetFont('times', '', 10);
@@ -527,11 +499,11 @@ if (isset($_GET["start_date"]) && isset($_GET["end_date"]) && isset($_GET["categ
 
     // Name for second row
     $pdf->SetFont('times', 'B', 10);
-    $pdf->Cell(0, 4, 'Engr. Gertrudes A. Viado', 0, 1, 'C');
+    $pdf->Cell(0, 4, 'ENGR. ALVIN L. MANUEL', 0, 1, 'C');
 
     // Title for second row
     $pdf->SetFont('times', '', 10);
-    $pdf->Cell(0, 4, 'Department Manager', 0, 1, 'C');
+    $pdf->Cell(0, 4, 'Acting Department Manager', 0, 1, 'C');
 
     // Output PDF
     $pdf->Output($reportTitle . '.pdf', 'I');

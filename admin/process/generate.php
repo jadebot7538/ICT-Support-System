@@ -39,7 +39,7 @@ R.created_at DESC;
     $data = $stmt->fetch(PDO::FETCH_OBJ);
     $data = (object) [
         'ref_no' => $refNo ?? '',
-        'requestor_name' => $data->requestor_name ?? '',
+        'requestor_name' => ucwords(strtolower($data->requestor_name)) ?? '',
         'requestor_id' => $data->requestor_id ?? '',
         'service_status' => $data->service_status ?? '',
         'type_of_service' => $data->type_of_service ?? '',

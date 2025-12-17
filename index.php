@@ -249,6 +249,7 @@ if ($employee) {
             <script src="js/validation.js"></script>
             <script src="js/index.js"></script>
             <script>
+                $returnUrl = "";
                 function loadServices(serviceId) {
                     let subServiceSelect = document.getElementById("typeOfSubService");
                     let customService = document.getElementById("CustomOthersContainer");
@@ -502,7 +503,7 @@ if ($employee) {
                                         Input.CustomOther.value = null;
 
                                         window.location.reload();
-                                        window.location.href = "https://rms.niaupriis.com/";
+                                        window.location.href = $returnUrl;
                                     }
                                 });
 
@@ -540,6 +541,7 @@ if ($employee) {
 
     <body class="h-100">
         <script>
+            $returnUrl = "";
             Swal.fire({
                 icon: 'error',
                 title: 'Access Denied',
@@ -576,7 +578,7 @@ if ($employee) {
                                     heightAuto: false,
                                 }).then((result) => {
                                     if (result.isConfirmed) {
-                                        window.location.href = "https://rms.niaupriis.com/";
+                                        window.location.href = $returnUrl;
                                     }
                                 });
                             } else {
@@ -588,7 +590,7 @@ if ($employee) {
                                         confirmButtonText: 'OK'
                                     }).then((result) => {
                                         if (result.isConfirmed) {
-                                            window.location.href = "https://rms.niaupriis.com/";
+                                            window.location.href = $returnUrl;
                                         }
                                     });
                                 } else if (data.csrf_token) {
@@ -599,7 +601,7 @@ if ($employee) {
                                         confirmButtonText: 'OK'
                                     }).then((result) => {
                                         if (result.isConfirmed) {
-                                            window.location.href = "https://rms.niaupriis.com/";
+                                            window.location.href = $returnUrl;
                                         }
                                     });
                                 } else {
@@ -610,7 +612,7 @@ if ($employee) {
                                         confirmButtonText: 'OK'
                                     }).then((result) => {
                                         if (result.isConfirmed) {
-                                            window.location.href = "https://rms.niaupriis.com/";
+                                            window.location.href = $returnUrl;
                                         }
                                     });
                                 }
@@ -627,7 +629,7 @@ if ($employee) {
                             });
                         });
                 } else {
-                    window.location.href = "https://rms.niaupriis.com/";
+                    window.location.href = $returnUrl;
 
                 }
 

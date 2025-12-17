@@ -1,9 +1,9 @@
 <?php
 
 // $dsn = 'mysql:host=192.168.1.30;dbname=support_system';
-$dsn = 'mysql:host=localhost;port=3307;dbname=support_system;charset=utf8mb4';
+$dsn = 'mysql:host=localhost;port=3306;dbname=support_system;charset=utf8mb4';
 $usernameDB = 'root';
-$passwordDB = 'jadebot7538';
+$passwordDB = '';
 
 try {
     $pdo = new PDO($dsn, $usernameDB, $passwordDB);

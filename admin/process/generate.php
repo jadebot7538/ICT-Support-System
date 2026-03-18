@@ -206,6 +206,8 @@ $pdf->SetXY($x, $footerY + 29); */
         $pdf->writeHTMLCell(0, 5, $x, $footerY + 29, 'Direct line No.: (044) 958 9709 &#8226; Telefax No.: (044) 958 9709', 0, 1, false, true, 'L', true);
         /*   $pdf->SetXY($x, $footerY + 33); */
         $pdf->writeHTMLCell(0, 5, $x, $footerY + 33, 'Email: upriis@nia.gov.ph &#8226; Website: www.upriis.nia.gov.ph &#8226; TIN: 000916415024', 0, 1, false, true, 'L', true);
+        $pdf->SetFont('times', 'I', 8);
+        $pdf->writeHTMLCell(0, 5, $x, $footerY + 38, 'NIA-UPRIIS-HEAD OFFICE-ODM-ICT-INT-Form03-Rev00', 0, 1, false, true, 'L', true);
     }
 
     // Create PDF instance for A4 size

@@ -12,7 +12,7 @@ if (!isSessionValid($pdo) || !isset($_SESSION['user_id'])) {
 try {
     function getMaintenancePersonnel($pdo)
     {
-        $sql = "SELECT * FROM maintenance_personnel";
+        $sql = "SELECT * FROM maintenance_personnel where is_deleted = '0'";
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
         $maintenancePersonnel = $stmt->fetchAll(PDO::FETCH_ASSOC);

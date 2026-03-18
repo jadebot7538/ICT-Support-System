@@ -259,6 +259,8 @@ if (isset($_GET["start_date"]) && isset($_GET["end_date"]) && isset($_GET["categ
             $this->SetFont('times', '', 9);
             $this->writeHTMLCell(0, 5, 10, $footerY + 29, 'Direct line No.: (044) 958 9709 &#8226; Telefax No.: (044) 958 9709', 0, 1, false, true, 'L', true);
             $this->writeHTMLCell(0, 5, 10, $footerY + 33, 'Email: upriis@nia.gov.ph &#8226; Website: www.upriis.nia.gov.ph &#8226; TIN: 000916415024', 0, 1, false, true, 'L', true);
+            $this->SetFont('times', 'I', 8);
+            $this->writeHTMLCell(0, 5, 10, $footerY + 38, 'NIA-UPRIIS-HEAD OFFICE-ODM-ICT-INT-Form04-Rev00', 0, 1, false, true, 'L', true);
         }
 
         // Helper function to truncate text with ellipsis if needed
